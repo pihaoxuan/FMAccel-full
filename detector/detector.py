@@ -43,14 +43,14 @@ def analyze_binary(binary_path):
 
     # 第三阶段：多行输出到 Profile
     if fma_instructions:
-        with open("./fma_profile.txt", "w") as f:
+        with open("./offline-analysis.txt", "w") as f:
             for insn in fma_instructions:
                 # 格式依然不变：META: <16进制偏移> <10进制长度>
                 f.write(f"META: {insn['offset']:x} {insn['len']}\n")
                 
-        print(f"\n[Success] Wrote {len(fma_instructions)} FMA instructions to fma_profile.txt\n")
+        print(f"\n[Success] Wrote {len(fma_instructions)} FMA instructions to offline-analysis.txt\n")
     else:
-        open("./fma_profile.txt","w").close()
+        open("./offline-analysis.txt","w").close()
         print("Error: No vfmadd instructions found in the binary.")
         sys.exit(1)
 

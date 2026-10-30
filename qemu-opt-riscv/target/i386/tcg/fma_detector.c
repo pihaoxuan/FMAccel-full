@@ -14,7 +14,7 @@ void init_gemm_detector(void)
         char line[256];
 
         if (path == NULL || path[0] == '\0') {
-            path = "/path/to/detectorAndQEMU/fma_profile.txt";
+            path = "/path/to/detectorAndQEMU/offline-analysis.txt";
         }
         table = g_hash_table_new_full(g_direct_hash, g_direct_equal,
                                       NULL, g_free);

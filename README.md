@@ -14,7 +14,7 @@ FMAccel/
 ├── README.md
 ├── detector/
 │   ├── detector.py
-│   └── fma_profile.txt
+│   └── offline-analysis.txt
 ├── qemu-opt-loongarch/
 ├── qemu-opt-ARMv8/
 ├── qemu-opt-riscv/
@@ -60,14 +60,14 @@ Run from the FMAccel root; subsequent commands reuse these variables in the same
 
 ```sh
 FMACCEL_ROOT=$(pwd)
-PROFILE="$FMACCEL_ROOT/detector/fma_profile.txt"
+PROFILE="$FMACCEL_ROOT/detector/offline-analysis.txt"
 ```
 
 ### 2.2 配置 profile 路径 / Configure the profile path
 
-编译 LoongArch、ARMv8 或 `qemu-count` 前，将对应目录下 `target/i386/tcg/fma_detector.c` 中的 `fopen` 路径替换为本机 `detector/fma_profile.txt` 的真实绝对路径，即上面 `PROFILE` 的值。源码中的 `/path/to/...` 是占位路径；修改后需要重新编译。
+编译 LoongArch、ARMv8 或 `qemu-count` 前，将对应目录下 `target/i386/tcg/fma_detector.c` 中的 `fopen` 路径替换为本机 `detector/offline-analysis.txt` 的真实绝对路径，即上面 `PROFILE` 的值。源码中的 `/path/to/...` 是占位路径；修改后需要重新编译。
 
-Before building LoongArch, ARMv8, or `qemu-count`, replace the `fopen` path in that tree's `target/i386/tcg/fma_detector.c` with the actual absolute path to `detector/fma_profile.txt`, matching `PROFILE` above. The `/path/to/...` strings are placeholders; rebuild after changing them.
+Before building LoongArch, ARMv8, or `qemu-count`, replace the `fopen` path in that tree's `target/i386/tcg/fma_detector.c` with the actual absolute path to `detector/offline-analysis.txt`, matching `PROFILE` above. The `/path/to/...` strings are placeholders; rebuild after changing them.
 
 RISC-V 支持通过环境变量指定同一个 profile，在运行前执行以下命令即可，无需修改源码路径。其他三个版本仍使用编译时指定的路径。
 
@@ -140,9 +140,9 @@ BASELINE_QEMU="$BASELINE_SRC/build/qemu-x86_64"
 
 ## 3. 检测 FMA 指令 / Detect FMA instructions
 
-三个平台均使用 `detector/detector.py`。它接收一个可执行文件路径，调用 `objdump -d -w`，并将结果写入当前工作目录中的 `fma_profile.txt`。因此，检测时进入 `detector/` 目录。
+三个平台均使用 `detector/detector.py`。它接收一个可执行文件路径，调用 `objdump -d -w`，并将结果写入当前工作目录中的 `offline-analysis.txt`。因此，检测时进入 `detector/` 目录。
 
-All three platforms use `detector/detector.py`. It takes one executable path, invokes `objdump -d -w`, and writes `fma_profile.txt` in the current working directory. Run it from `detector/` as shown below.
+All three platforms use `detector/detector.py`. It takes one executable path, invokes `objdump -d -w`, and writes `offline-analysis.txt` in the current working directory. Run it from `detector/` as shown below.
 
 ```sh
 GUEST="$FMACCEL_ROOT/test/benchmark-multest"

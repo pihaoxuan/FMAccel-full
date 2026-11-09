@@ -41,11 +41,6 @@ FMAccel/
 
 This repository includes the complete source trees of all four QEMU variants, the detector, and the test programs directly, without Git submodules. A standard clone retrieves the full project.
 
-```sh
-git clone https://github.com/pihaoxuan/FMAccel-full.git
-cd FMAccel-full
-```
-
 ## 2. 编译 / Build
 
 以下命令在对应平台的 Linux 主机上执行。准备好 QEMU 编译依赖、支持对应平台指令扩展的 C 编译器，以及 Python 3 和能够反汇编 x86-64 的 GNU `objdump`。

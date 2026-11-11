@@ -3509,14 +3509,14 @@ uint64_t my_demo_guest_base = 0;
 
 static void i386_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
 {
-// ===== 运行时总指令计数（仅用于测量，测完删除）=====
+// ===== （，）=====
 //    TCGv_ptr  t_ptr = tcg_constant_ptr(&g_total_insn_exec);
 //    TCGv_i64  t_val = tcg_temp_new_i64();
 //    tcg_gen_ld_i64(t_val, t_ptr, 0);
 //    tcg_gen_addi_i64(t_val, t_val, 1);
 //    tcg_gen_st_i64(t_val, t_ptr, 0);
 //    tcg_temp_free_i64(t_val);
-// ===== END 运行时总指令计数 =====
+// ===== END  =====
     DisasContext *dc = container_of(dcbase, DisasContext, base);
     bool orig_cc_op_dirty = dc->cc_op_dirty;
     CCOp orig_cc_op = dc->cc_op;
@@ -3619,8 +3619,8 @@ static void i386_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
                 }
             }
             
-            // 【核心修改点】：将原先的多次拆分调用改为一次向量化 Helper 调用
-            // Flags 打包：包含 opcode, w_bit (Double/Float) 和 l_bit (256/128位)
+            // 【】： Helper 
+            // Flags ： opcode, w_bit (Double/Float)  l_bit (256/128)
             uint32_t flags = opcode | (w_bit << 8) | (l_bit << 9);
             TCGv_i32 t_flags = tcg_constant_i32(flags);
             TCGv_i32 t_dofs = tcg_constant_i32(dofs);
@@ -3630,11 +3630,11 @@ static void i386_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
                 TCGv_i32 t_bofs = tcg_constant_i32(bofs);
                 gen_helper_custom_fma_vector_reg(tcg_env, t_dofs, t_aofs, t_bofs, t_flags);
             } else {
-                // A0 是计算好的 Guest 虚拟地址，直接传给 Memory Helper
+                // A0  Guest ， Memory Helper
                 gen_helper_custom_fma_vector_mem(tcg_env, t_dofs, t_aofs, A0, t_flags);
             }
 
-            // VEX 编码规范：如果 l_bit == 0 (即 128 位指令操作 YMM)，需要将目标寄存器高 128 位清零
+            // VEX ： l_bit == 0 ( 128  YMM)， 128 
             if (l_bit == 0) {
                 uint32_t high_ofs = offsetof(CPUX86State, xmm_regs[reg_dest]) + 16;  
                 tcg_gen_gvec_dup_imm(MO_64, high_ofs, 16, 16, 0);

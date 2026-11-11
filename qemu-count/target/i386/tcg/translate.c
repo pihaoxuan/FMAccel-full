@@ -3621,11 +3621,11 @@ static void i386_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
                 TCGv_i32 t_bofs = tcg_constant_i32(bofs);
                 gen_helper_custom_fma_vector_reg(tcg_env, t_dofs, t_aofs, t_bofs, t_flags);
             } else {
-                // A0 是计算好的 Guest 虚拟地址，直接传给 Memory Helper
+                // A0  Guest ， Memory Helper
                 gen_helper_custom_fma_vector_mem(tcg_env, t_dofs, t_aofs, A0, t_flags);
             }
 
-            // VEX 编码规范：如果 l_bit == 0 (即 128 位指令操作 YMM)，需要将目标寄存器高 128 位清零
+            // VEX ： l_bit == 0 ( 128  YMM)， 128 
             if (l_bit == 0) {
                 uint32_t high_ofs = offsetof(CPUX86State, xmm_regs[reg_dest]) + 16;  
                 tcg_gen_gvec_dup_imm(MO_64, high_ofs, 16, 16, 0);

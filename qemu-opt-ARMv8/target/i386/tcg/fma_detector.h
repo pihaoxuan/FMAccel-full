@@ -3,7 +3,7 @@
 
 #include "qemu/osdep.h"
 #include "cpu.h"
-#include "exec/translator.h" // 只要这一个就够了！
+#include "exec/translator.h" // ！
 #include <glib.h>
 
 typedef struct {

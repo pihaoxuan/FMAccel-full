@@ -1,93 +1,93 @@
 CALLOUTS.BUILTIN.ja               2018/03/26
 
 
-* FAIL    (前進)
+* FAIL    ()
 
   (*FAIL)
 
-  常に失敗する
+  にする
 
 
-* MISMATCH    (前進)
+* MISMATCH    ()
 
   (*MISMATCH)
 
-  照合を中止する
-  検索は継続する
+  をする
+  はする
 
 
-* ERROR    (前進)
+* ERROR    ()
 
   (*ERROR{n::LONG})
 
-  検索/照合を中止する
-  戻り値は引数'n'の値。(-1より小さい負の値でなければならない)
-  'n'はオプション引数で、デフォルト値はONIG_ABORT
+  /をする
+  りは'n'の。(-1よりさいのでなければならない)
+  'n'はオプションで、デフォルトはONIG_ABORT
 
 
-* MAX    (前進/後退)
+* MAX    (/)
 
   (*MAX{n::LONG/TAG, c::CHAR})
 
-  成功(デフォルト)、前進または後退回数を制限する
-  'n'がTAGのときは、そのTAGのcalloutのslot 0の値が使用される
-  'c'引数の値によって、slot 0の値が変化する
-  'c'はオプション引数で、デフォルト値は'X'
+  (デフォルト)、またはをする
+  'n'がTAGのときは、そのTAGのcalloutのslot 0のがされる
+  'c'のによって、slot 0のがする
+  'c'はオプションで、デフォルトは'X'
 
-  例:  "(?:(*COUNT[T]{X})a)*(?:(*MAX{T})c)*"
+  :  "(?:(*COUNT[T]{X})a)*(?:(*MAX{T})c)*"
 
   [callout data]
-  slot 0: '>': 前進回数, '<': 後退回数, 'X': 成功回数(デフォルト)
+  slot 0: '>': , '<': , 'X': (デフォルト)
 
 
-* COUNT    (前進/後退)
+* COUNT    (/)
 
   (*COUNT{c::CHAR})
 
   カウンタ
-  'c'引数の値によって、slot 0の値が変化する
-  'c'はオプション引数で、デフォルト値は'>'
+  'c'のによって、slot 0のがする
+  'c'はオプションで、デフォルトは'>'
 
   [callout data]
-  slot 0: '>': 前進回数(デフォルト), '<': 後退回数, 'X': 成功回数
-  slot 1: 前進回数
-  slot 2: 後退回数
+  slot 0: '>': (デフォルト), '<': , 'X': 
+  slot 1: 
+  slot 2: 
 
-  (* 成功回数 = 前進回数 - 後退回数)
+  (*  =  - )
 
-  ** ONIG_OPTION_FIND_LONGEST または ONIG_OPTION_FIND_NOT_EMPTY が使用されると
-     正確な動作ができなくなる
+  ** ONIG_OPTION_FIND_LONGEST または ONIG_OPTION_FIND_NOT_EMPTY がされると
+     なができなくなる
 
 
-* TOTAL_COUNT    (前進/後退)
+* TOTAL_COUNT    (/)
 
   (*TOTAL_COUNT{c::CHAR})
 
-  これはCOUNTとほとんど同じ
-  しかし、カウントが検索過程で積算される
-  'c'はオプション引数で、デフォルト値は'>'
+  これはCOUNTとほとんどじ
+  しかし、カウントがでされる
+  'c'はオプションで、デフォルトは'>'
 
   [callout data]
-  slot 0: '>': 前進回数(デフォルト), '<': 後退回数, 'X': 成功回数
-  slot 1: 前進回数
-  slot 2: 後退回数
+  slot 0: '>': (デフォルト), '<': , 'X': 
+  slot 1: 
+  slot 2: 
 
-  ** ONIG_OPTION_FIND_LONGEST または ONIG_OPTION_FIND_NOT_EMPTY が使用されると
-     正確な動作ができなくなる
+  ** ONIG_OPTION_FIND_LONGEST または ONIG_OPTION_FIND_NOT_EMPTY がされると
+     なができなくなる
 
 
-* CMP    (前進)
+* CMP    ()
 
   (*CMP{x::TAG/LONG, op::STRING, y::TAG/LONG})
 
-  xの値とyの値をop演算子で比較する
-  x, yがTAGのときにはそのcalloutのslot 0の値が参照される
+  xのとyのをopでする
+  x, yがTAGのときにはそのcalloutのslot 0のがされる
 
   op: '==', '!=', '>', '<', '>=', '<='
 
-  例: "(?:(*MAX[TA]{7})a|(*MAX[TB]{5})b)*(*CMP{TA,>=,4})"
+  : "(?:(*MAX[TA]{7})a|(*MAX[TB]{5})b)*(*CMP{TA,>=,4})"
 
   [callout data]
-  slot 0: op値 (src/regexec.c の中の enum OP_CMP)
+  slot 0: op (src/regexec.c のの enum OP_CMP)
 
 //END

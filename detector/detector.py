@@ -19,7 +19,7 @@ def analyze_binary(binary_path):
 
     fma_instructions = []
 
-    # 第一阶段：线性扫描所有指令
+    # ：
     for line in result.stdout.splitlines():
         match = insn_pattern.match(line)
         if not match:
@@ -30,22 +30,22 @@ def analyze_binary(binary_path):
         insn_len = len(bytes_str.split())
         mnemonic = match.group(3).lower()
 
-        # 第二阶段：精准捕捉 vfmadd
+        # ： vfmadd
         # if 'vfmadd' in mnemonic:
         if re.fullmatch(r'vfmadd(?:132|213|231)(?:ps|pd)',  mnemonic):
             first_byte = bytes_str.split()[0].lower()
             if first_byte == 'c4':
                 fma_instructions.append({
                     'offset': addr,
-                    'len': insn_len,  # 保留真实的指令长度 (通常是 5)
+                    'len': insn_len,  #  ( 5)
                     'mnemonic': mnemonic
                 })
 
-    # 第三阶段：多行输出到 Profile
+    # ： Profile
     if fma_instructions:
         with open("./offline-analysis.txt", "w") as f:
             for insn in fma_instructions:
-                # 格式依然不变：META: <16进制偏移> <10进制长度>
+                # ：META: <16> <10>
                 f.write(f"META: {insn['offset']:x} {insn['len']}\n")
                 
         print(f"\n[Success] Wrote {len(fma_instructions)} FMA instructions to offline-analysis.txt\n")

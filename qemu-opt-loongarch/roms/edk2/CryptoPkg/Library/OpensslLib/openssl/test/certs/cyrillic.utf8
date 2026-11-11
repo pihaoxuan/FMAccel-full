@@ -3,7 +3,7 @@ Certificate:
         Version: 3 (0x2)
         Serial Number: 123456 (0x1e240)
         Signature Algorithm: sha256WithRSAEncryption
-        Issuer: CN=認証局
+        Issuer: CN=
         Validity
             Not Before: Mar  3 09:24:52 2021 GMT
             Not After : Apr  2 09:24:52 2021 GMT

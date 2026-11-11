@@ -4,7 +4,7 @@
  * Copyright (c) 2022 CHINA TELECOM CO.,LTD.
  *
  * Authors:
- *  Hyman Huang(黄勇) <huangy81@chinatelecom.cn>
+ *  Hyman Huang() <huangy81@chinatelecom.cn>
  *
  * This work is licensed under the terms of the GNU GPL, version 2 or later.
  * See the COPYING file in the top-level directory.

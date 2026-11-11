@@ -1,22 +1,22 @@
 FAQ    2016/04/06
 
-1. 最長マッチ
+1. マッチ
 
-   onig_new()の中で、ONIG_OPTION_FIND_LONGESTオプション
-   を使用すれば最長マッチになる。
+   onig_new()ので、ONIG_OPTION_FIND_LONGESTオプション
+   をすればマッチになる。
 
 
 2. CR + LF
 
-   DOSの改行(CR(0x0c) + LF(0x0a)の連続)
+   DOSの(CR(0x0c) + LF(0x0a)の)
 
-   regenc.hの中の、以下の部分を有効にする。
+   regenc.hのの、のをにする。
 
      /* #define USE_CRNL_AS_LINE_TERMINATOR */
 
 
 3. メーリングリスト
 
-   鬼車に関するメーリングリストは存在しない。
+   にするメーリングリストはしない。
 
 //END

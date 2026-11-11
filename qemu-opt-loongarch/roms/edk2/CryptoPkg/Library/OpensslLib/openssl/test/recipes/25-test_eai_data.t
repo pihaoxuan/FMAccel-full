@@ -50,8 +50,8 @@ is(cmp_text($out, srctop_file($folder, "san.utf8")), 0, 'Comparing othername for
 SKIP: {
     skip "Unicode tests disabled on MingW", 2 if $^O =~ /^msys$/;
 
-    ok(run(app(["openssl", "verify", "-nameopt", "utf8", "-no_check_time", "-verify_email", "学生\@elementary.school.example.com", "-CAfile", $ascii_chain_pem, $ascii_pem])));
-    ok(run(app(["openssl", "verify", "-nameopt", "utf8", "-no_check_time", "-verify_email", "医生\@大学.example.com", "-CAfile", $utf8_chain_pem, $utf8_pem])));
+    ok(run(app(["openssl", "verify", "-nameopt", "utf8", "-no_check_time", "-verify_email", "\@elementary.school.example.com", "-CAfile", $ascii_chain_pem, $ascii_pem])));
+    ok(run(app(["openssl", "verify", "-nameopt", "utf8", "-no_check_time", "-verify_email", "\@.example.com", "-CAfile", $utf8_chain_pem, $utf8_pem])));
 }
 
 ok(run(app(["openssl", "verify", "-nameopt", "utf8", "-no_check_time", "-CAfile", $ascii_chain_pem, $ascii_pem])));

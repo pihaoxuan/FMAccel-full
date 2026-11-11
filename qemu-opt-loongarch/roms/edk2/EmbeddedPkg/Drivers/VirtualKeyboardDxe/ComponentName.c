@@ -34,7 +34,7 @@ GLOBAL_REMOVE_IF_UNREFERENCED EFI_UNICODE_STRING_TABLE  mVirtualKeyboardDriverNa
   },
   {
     "zh-CHS",
-    L"虚拟键盘驱动程序"
+    L""
   },
   {
     NULL,

@@ -18,58 +18,58 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 
 msgid " - Press Ctrl+Alt+G to release grab"
-msgstr " - 按下 Ctrl+Alt+G 取消捕获"
+msgstr " -  Ctrl+Alt+G "
 
 msgid " [Paused]"
-msgstr " [已暂停]"
+msgstr " []"
 
 msgid "_Pause"
-msgstr "暂停(_P)"
+msgstr "(_P)"
 
 msgid "_Reset"
-msgstr "重置(_R)"
+msgstr "(_R)"
 
 msgid "Power _Down"
-msgstr "关闭电源(_D)"
+msgstr "(_D)"
 
 msgid "_Quit"
-msgstr "退出(_Q)"
+msgstr "(_Q)"
 
 msgid "_Fullscreen"
-msgstr "全屏(_F)"
+msgstr "(_F)"
 
 msgid "_Copy"
-msgstr "复制(_C)"
+msgstr "(_C)"
 
 msgid "Zoom _In"
-msgstr "放大(_I)"
+msgstr "(_I)"
 
 msgid "Zoom _Out"
-msgstr "缩小(_O)"
+msgstr "(_O)"
 
 msgid "Best _Fit"
-msgstr "最合适大小(_F)"
+msgstr "(_F)"
 
 msgid "Zoom To _Fit"
-msgstr "缩放以适应大小(_F)"
+msgstr "(_F)"
 
 msgid "Grab On _Hover"
-msgstr "鼠标经过时捕获(_H)"
+msgstr "(_H)"
 
 msgid "_Grab Input"
-msgstr "捕获输入(_G)"
+msgstr "(_G)"
 
 msgid "Show _Tabs"
-msgstr "显示标签页(_T)"
+msgstr "(_T)"
 
 msgid "Detach Tab"
-msgstr "分离标签页"
+msgstr ""
 
 msgid "Show Menubar"
-msgstr "显示菜单栏"
+msgstr ""
 
 msgid "_Machine"
-msgstr "虚拟机(_M)"
+msgstr "(_M)"
 
 msgid "_View"
-msgstr "视图(_V)"
+msgstr "(_V)"

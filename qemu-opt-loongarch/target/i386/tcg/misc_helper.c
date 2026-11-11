@@ -155,17 +155,17 @@ target_ulong HELPER(rdpid)(CPUX86State *env)
 #include <math.h>
 
 //void helper_custom_fast_fma(CPUX86State *env, uint32_t dest, uint32_t src1, uint32_t src2, target_ulong vaddr, uint32_t flags) {
-//    // 获取宿主机的指令返回地址，极速访问内存发生缺页时，能精准恢复虚拟机上下文
+//    // ，，
 //    uintptr_t ra = GETPC(); 
 //    
-//    // 解析标志位
+//    // 
 //    uint32_t oprsz = flags & 0xFFFF;
 //    uint32_t opcode = (flags >> 16) & 0xFF;
 //    uint32_t w_bit = (flags >> 24) & 1;
 //    
 //    int element_count = oprsz / ((w_bit == 1) ? 8 : 4);
 //
-//    if (w_bit == 1) { // 64位 double (pd)
+//    if (w_bit == 1) { // 64 double (pd)
 //        double * __restrict dest_ptr = (double *)&env->xmm_regs[dest];
 //        double * __restrict src1_ptr = (double *)&env->xmm_regs[src1];
 //        double * __restrict src2_ptr;
@@ -187,7 +187,7 @@ target_ulong HELPER(rdpid)(CPUX86State *env)
 //            else if (opcode == 0xA8) dest_ptr[i] = (dest_ptr[i] * src1_ptr[i]) + src2_ptr[i];
 //            else if (opcode == 0x98) dest_ptr[i] = (dest_ptr[i] * src2_ptr[i]) + src1_ptr[i];
 //        }
-//    } else { // 32位 float (ps)
+//    } else { // 32 float (ps)
 //        float * __restrict dest_ptr = (float *)&env->xmm_regs[dest];
 //        float * __restrict src1_ptr = (float *)&env->xmm_regs[src1];
 //        float * __restrict src2_ptr;
@@ -212,7 +212,7 @@ target_ulong HELPER(rdpid)(CPUX86State *env)
 //        }
 //    }
 //
-//    // 清除 YMM 高 128 位
+//    //  YMM  128 
 //    if (oprsz == 16) {
 //        env->xmm_regs[dest].ZMM_Q(2) = 0;
 //        env->xmm_regs[dest].ZMM_Q(3) = 0;
@@ -231,7 +231,7 @@ target_ulong HELPER(rdpid)(CPUX86State *env)
 //    bool is_scalar = (opcode == 0x99 || opcode == 0xA9 || opcode == 0xB9);
 //
 //    if (w_bit == 1) { 
-//        // 64位数据包含 1 个 double
+//        // 64 1  double
 //        union { uint64_t i; double f; } vd, va, vb, vres;
 //        vd.i = d; va.i = a; vb.i = b;
 //        
@@ -245,7 +245,7 @@ target_ulong HELPER(rdpid)(CPUX86State *env)
 //	}
 //        return vres.i;
 //    } else { 
-//        // 64位数据包含 2 个 float
+//        // 64 2  float
 //        union { uint64_t i; float f[2]; } vd, va, vb, vres;
 //        vd.i = d; va.i = a; vb.i = b;
 //        
@@ -265,16 +265,16 @@ target_ulong HELPER(rdpid)(CPUX86State *env)
 //}
 
 
-#include <lasxintrin.h> // 龙芯 256-bit 向量指令集 (LASX)
-#include <lsxintrin.h>  // 龙芯 128-bit 向量指令集 (LSX)
+#include <lasxintrin.h> //  256-bit  (LASX)
+#include <lsxintrin.h>  //  128-bit  (LSX)
 #include "fpu/softfloat.h"
-// #include "exec/cpu_ldst.h" // 需要用到内存访问接口和 GETPC()
+// #include "exec/cpu_ldst.h" //  GETPC()
 
 // ====================================================================
-// 处理纯寄存器操作数的 Helper
+//  Helper
 // ====================================================================
 void helper_custom_fma_vector_reg(CPUX86State *env, uint32_t dofs, uint32_t aofs, uint32_t bofs, uint32_t flags) {
-    /* --- MXCSR 守卫：非默认 FP 环境 → 回退至软浮点 --- */
+    /* --- MXCSR ： FP  →  --- */
     if (unlikely(env->mxcsr & MXCSR_FP_NONDEFAULT)) {
         uint32_t opcode = flags & 0xFF;
         uint32_t w_bit  = (flags >> 8) & 1;
@@ -300,9 +300,9 @@ void helper_custom_fma_vector_reg(CPUX86State *env, uint32_t dofs, uint32_t aofs
                 dreg->ZMM_L(i) = r;
             }
         }
-        return;   /* 跳过 LASX/LSX 快速路径 */
+        return;   /*  LASX/LSX  */
     }
-    /* --- 守卫结束 --- */
+    /* ---  --- */
     
     uint32_t opcode = flags & 0xFF;
     uint32_t w_bit = (flags >> 8) & 1;
@@ -314,7 +314,7 @@ void helper_custom_fma_vector_reg(CPUX86State *env, uint32_t dofs, uint32_t aofs
     void *pb = (void *)env + bofs;
 
     if (l_bit == 1) { // 256-bit YMM (LASX)
-        if (w_bit == 1) { // Double (4个双精度)
+        if (w_bit == 1) { // Double (4)
             __m256d vd = (__m256d)__lasx_xvld(pd, 0);
             __m256d va = (__m256d)__lasx_xvld(pa, 0);
             __m256d vb = (__m256d)__lasx_xvld(pb, 0);
@@ -325,7 +325,7 @@ void helper_custom_fma_vector_reg(CPUX86State *env, uint32_t dofs, uint32_t aofs
             else if (opcode == 0x98) vres = __lasx_xvfmadd_d(vd, vb, va); // d*b+a
             else vres = vd;
             
-            // 兼容你的标量保留逻辑
+            // 
             if (is_scalar) {
                 double *res_f = (double *)&vres;
                 double *d_f = (double *)pd;
@@ -333,7 +333,7 @@ void helper_custom_fma_vector_reg(CPUX86State *env, uint32_t dofs, uint32_t aofs
             }
             __lasx_xvst(vres, pd, 0);
             
-        } else { // Float (8个单精度)
+        } else { // Float (8)
             __m256 vd = (__m256)__lasx_xvld(pd, 0);
             __m256 va = (__m256)__lasx_xvld(pa, 0);
             __m256 vb = (__m256)__lasx_xvld(pb, 0);
@@ -352,7 +352,7 @@ void helper_custom_fma_vector_reg(CPUX86State *env, uint32_t dofs, uint32_t aofs
             __lasx_xvst(vres, pd, 0);
         }
     } else { // 128-bit XMM (LSX)
-        if (w_bit == 1) { // Double (2个双精度)
+        if (w_bit == 1) { // Double (2)
             __m128d vd = (__m128d)__lsx_vld(pd, 0);
             __m128d va = (__m128d)__lsx_vld(pa, 0);
             __m128d vb = (__m128d)__lsx_vld(pb, 0);
@@ -369,7 +369,7 @@ void helper_custom_fma_vector_reg(CPUX86State *env, uint32_t dofs, uint32_t aofs
                 res_f[1] = d_f[1];
             }
             __lsx_vst(vres, pd, 0);
-        } else { // Float (4个单精度)
+        } else { // Float (4)
             __m128 vd = (__m128)__lsx_vld(pd, 0);
             __m128 va = (__m128)__lsx_vld(pa, 0);
             __m128 vb = (__m128)__lsx_vld(pb, 0);
@@ -391,16 +391,16 @@ void helper_custom_fma_vector_reg(CPUX86State *env, uint32_t dofs, uint32_t aofs
 }
 
 // ====================================================================
-// 处理带内存操作数的 Helper
+//  Helper
 // ====================================================================
 void helper_custom_fma_vector_mem(CPUX86State *env, uint32_t dofs, uint32_t aofs, target_ulong vaddr, uint32_t flags) {
-    uintptr_t ra = GETPC(); // 捕获异常返回地址，用于引发缺页异常时回溯
+    uintptr_t ra = GETPC(); // ，
     uint32_t opcode = flags & 0xFF;
     uint32_t w_bit = (flags >> 8) & 1;
     uint32_t l_bit = (flags >> 9) & 1;
     bool is_scalar = (opcode == 0x99 || opcode == 0xA9 || opcode == 0xB9);
 
-    // 核心安全点：使用 QEMU API 读取 Guest 内存并存放到宿主机的栈对齐数组中
+    // ： QEMU API  Guest 
     __attribute__((aligned(32))) uint64_t mem_buf[4] = {0};
     mem_buf[0] = cpu_ldq_data_ra(env, vaddr, ra);
     mem_buf[1] = cpu_ldq_data_ra(env, vaddr + 8, ra);
@@ -411,13 +411,13 @@ void helper_custom_fma_vector_mem(CPUX86State *env, uint32_t dofs, uint32_t aofs
 
     void *pd = (void *)env + dofs;
     void *pa = (void *)env + aofs;
-    void *pb = (void *)mem_buf; // 将读入的内存作为操作数 b
+    void *pb = (void *)mem_buf; //  b
 
-    /* --- MXCSR 守卫：内存读完后检查，非默认 FP 环境 → 软浮点回退 --- */
+    /* --- MXCSR ：， FP  →  --- */
     if (unlikely(env->mxcsr & MXCSR_FP_NONDEFAULT)) {
         ZMMReg *dreg = (ZMMReg *)pd;
         ZMMReg *areg = (ZMMReg *)pa;
-        ZMMReg *breg = (ZMMReg *)mem_buf;  /* 内存操作数已就位 */
+        ZMMReg *breg = (ZMMReg *)mem_buf;  /*  */
         int n = l_bit ? (w_bit ? 4 : 8) : (w_bit ? 2 : 4);
         for (int i = 0; i < n; i++) {
             if (w_bit) {
@@ -438,11 +438,11 @@ void helper_custom_fma_vector_mem(CPUX86State *env, uint32_t dofs, uint32_t aofs
                 dreg->ZMM_L(i) = r;
             }
         }
-        return;   /* 跳过 LASX/LSX 快速路径 */
+        return;   /*  LASX/LSX  */
     }
-    /* --- 守卫结束 --- */
+    /* ---  --- */
 
-    // -------- 接下来的计算逻辑与 Register Helper 完全一致 --------
+    // --------  Register Helper  --------
     if (l_bit == 1) { // 256-bit YMM (LASX)
         if (w_bit == 1) {
             __m256d vd = (__m256d)__lasx_xvld(pd, 0);
